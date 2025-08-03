@@ -170,7 +170,8 @@ SGenericNodeComponentClassCombo::~SGenericNodeComponentClassCombo()
 
 void SGenericNodeComponentClassCombo::GenerateFilteredComponentList()
 {
-	FilteredComponentClassList.Reset();
+	if (!FilteredComponentClassList.IsEmpty())
+		FilteredComponentClassList.Reset();
 
 	int32 LastHeadingIndex = INDEX_NONE;
 	FGenericNodeComponentClassComboEntryPtr* LastHeadingPtr = nullptr;
