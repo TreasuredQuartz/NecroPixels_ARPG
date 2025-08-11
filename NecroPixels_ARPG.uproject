@@ -23,6 +23,10 @@
 			]
 		},
 		{
+			"Name": "GenericGraph",
+			"Enabled":  true
+		},
+		{
 			"Name": "StateGraph",
 			"Enabled": true
 		},

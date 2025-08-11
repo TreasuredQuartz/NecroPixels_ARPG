@@ -14,7 +14,7 @@ class UActorComponent;
 /**
  * 
  */
-UCLASS(DefaultToInstanced, BlueprintType, Blueprintable, abstract, meta = (ShortTooltip = "A GenericGraphNodeComponent is a reusable component that can be added to any Generic Graph Node."), config=Engine, MinimalAPI)
+UCLASS(ClassGroup = (Common), DefaultToInstanced, BlueprintType, Blueprintable, abstract, meta = (BlueprintSpawnableComponent, ShortTooltip = "A GenericGraphNodeComponent is a reusable component that can be added to any Generic Graph Node."), config=Engine, MinimalAPI)
 class UGenericGraphNodeComponent : public UObject, public IInterface_AssetUserData
 {
 	GENERATED_BODY()
@@ -42,6 +42,8 @@ protected:
 
 public:
 	void SetOwner(UGenericGraphNode* NewOwner) { Owner = NewOwner; };
+
+	UFUNCTION(BlueprintPure, Category = "NodeComponent")
 	UGenericGraphNode* GetOwner() const { return Owner; };
 	GENERICGRAPHRUNTIME_API bool IsEditableWhenInherited() const;
 	EComponentCreationMethod CreationMethod;

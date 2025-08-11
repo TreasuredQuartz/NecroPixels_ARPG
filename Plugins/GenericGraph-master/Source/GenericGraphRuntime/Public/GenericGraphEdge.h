@@ -15,6 +15,9 @@ public:
 	UGenericGraphEdge();
 	virtual ~UGenericGraphEdge();
 
+	// UPROPERTY(BlueprintReadOnly, Category = "GenericGraphEdge")
+	// UEd;
+
 	UPROPERTY(VisibleAnywhere, Category = "GenericGraphNode")
 	UGenericGraph* Graph;
 

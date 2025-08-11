@@ -399,7 +399,7 @@ void FGenericNodeComponentTypeRegistryData::ForceRefreshComponentList()
 	for (TObjectIterator<UClass> It; It; ++It)
 	{
 		UClass* Class = *It;
-		// If this is a subclass of Actor Component, not abstract, and tagged as spawnable from Kismet
+		// If this is a subclass of Node Component, not abstract, and tagged as spawnable from Kismet
 		if (Class->IsChildOf(UGenericGraphNodeComponent::StaticClass()))
 		{
 			InMemoryClassPaths.Add(Class->GetClassPathName());
