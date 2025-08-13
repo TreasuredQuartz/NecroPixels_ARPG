@@ -9,6 +9,7 @@
 #include "AttackStateMachine.generated.h"
 
 class UGenericGraph;
+class UNodeAttackState;
 
 UCLASS(Blueprintable)
 class NECROPIXELS_ARPG_API AAttackStateMachine : public AInfo
@@ -26,7 +27,7 @@ public:
 	UGenericGraph* AttackStateGraph;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttackStateMachine")
-	UNodeAttackState* CurrentNode;
+	TObjectPtr<UNodeAttackState> CurrentNode;
 
 	// 0 is none or invalid.
 	// Use any other number to denote your type of attack ie:
@@ -114,6 +115,9 @@ public:
 	/////////////
 
 public:
+	// Constructor
+	AAttackInstance();
+
 	UFUNCTION(BlueprintPure)
 	virtual float CalcDamage() const { return CalcDamage_BP(); };
 

@@ -94,8 +94,15 @@ UNodeAttackState* UNodeAttackState::CheckTransitions(uint8 TransitionAttackType)
 	return nullptr;
 }
 
+AAttackInstance::AAttackInstance()
+{
+	SetCanBeDamaged(false);
+}
+
 bool AAttackInstance::ShouldImpactActor(AActor* InActor) const
 {
+	if (!InActor->CanBeDamaged()) return false;
+
 	if (!bShouldSelfHarm)
 	{
 		if (GetOwner() == InActor) return false;
