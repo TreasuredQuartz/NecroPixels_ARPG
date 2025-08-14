@@ -334,7 +334,7 @@ void FAssetEditor_GenericGraph::TryInvokingDetailsTab()
 
 void FAssetEditor_GenericGraph::CreateInternalWidgets()
 {
-	ViewportWidget = CreateViewportWidget();
+	ViewportWidget = CreateViewportWidget(EditingGraph->EdGraph);
 
 	FDetailsViewArgs Args;
 	Args.bHideSelectionTip = true;
@@ -349,7 +349,7 @@ void FAssetEditor_GenericGraph::CreateInternalWidgets()
 	EditorSettingsWidget->SetObject(GenricGraphEditorSettings);
 }
 
-TSharedRef<SGraphEditor> FAssetEditor_GenericGraph::CreateViewportWidget()
+TSharedRef<SGraphEditor> FAssetEditor_GenericGraph::CreateViewportWidget(UEdGraph* InGraph)
 {
 	FGraphAppearanceInfo AppearanceInfo;
 	AppearanceInfo.CornerText = LOCTEXT("AppearanceCornerText_GenericGraph", "Generic Graph");
@@ -364,7 +364,7 @@ TSharedRef<SGraphEditor> FAssetEditor_GenericGraph::CreateViewportWidget()
 		.AdditionalCommands(GraphEditorCommands)
 		.IsEditable(true)
 		.Appearance(AppearanceInfo)
-		.GraphToEdit(EditingGraph->EdGraph)
+		.GraphToEdit(InGraph)
 		.GraphEvents(InEvents)
 		.AutoExpandActionMenu(true)
 		.ShowGraphStateOverlay(false);
@@ -450,6 +450,10 @@ void FAssetEditor_GenericGraph::CreateCommandList()
 	GraphEditorCommands->MapAction(FEditorCommands_GenericGraph::Get().AutoArrange,
 		FExecuteAction::CreateRaw(this, &FAssetEditor_GenericGraph::AutoArrange),
 		FCanExecuteAction::CreateRaw(this, &FAssetEditor_GenericGraph::CanAutoArrange));
+
+	GraphEditorCommands->MapAction(FEditorCommands_GenericGraph::Get().Edit,
+		FExecuteAction::CreateRaw(this, &FAssetEditor_GenericGraph::EditNode),
+		FCanExecuteAction::CreateRaw(this, &FAssetEditor_GenericGraph::CanEditNode));
 
 	// Editing commands
 	GraphEditorCommands->MapAction(FGenericCommands::Get().SelectAll,
@@ -755,6 +759,35 @@ bool FAssetEditor_GenericGraph::CanDuplicateNodes()
 	return CanCopyNodes();
 }
 
+void FAssetEditor_GenericGraph::EditNode()
+{
+	TSharedPtr<SGraphEditor> CurrentGraphEditor = GetCurrGraphEditor();
+	if (CurrentGraphEditor.IsValid())
+	{
+		const FGraphPanelSelectionSet SelectedNodes = GetSelectedNodes();
+		for (FGraphPanelSelectionSet::TConstIterator NodeIt(SelectedNodes); NodeIt; ++NodeIt)
+		{
+			UEdNode_GenericGraphNode* SelectedNode = Cast<UEdNode_GenericGraphNode>(*NodeIt);
+			if (SelectedNode != NULL && SelectedNode->CanEditNode())
+			{
+				// SetCurrGraphEditor();
+				break;
+			}
+		}
+	}
+}
+
+bool FAssetEditor_GenericGraph::CanEditNode()
+{
+	UEdGraph_GenericGraph* EdGraph = Cast<UEdGraph_GenericGraph>(EditingGraph->EdGraph);
+	check(EdGraph != nullptr);
+
+	UGenericGraph* Graph = EdGraph->GetGenericGraph();
+	check(Graph != nullptr);
+
+	return Graph->bCanEditNode && GetSelectedNodes().Num() == 1;
+}
+
 void FAssetEditor_GenericGraph::GraphSettings()
 {
 	PropertyWidget->SetObject(EditingGraph);
@@ -828,7 +861,7 @@ bool FAssetEditor_GenericGraph::CanRenameNodes() const
 	check(EdGraph != nullptr);
 
 	UGenericGraph* Graph = EdGraph->GetGenericGraph();
-	check(Graph != nullptr)
+	check(Graph != nullptr);
 
 	return Graph->bCanRenameNode && GetSelectedNodes().Num() == 1;
 }

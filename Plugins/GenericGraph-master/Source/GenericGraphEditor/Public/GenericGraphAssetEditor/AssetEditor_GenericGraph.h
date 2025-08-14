@@ -66,7 +66,7 @@ protected:
 	void TryInvokingDetailsTab();
 
 	void CreateInternalWidgets();
-	TSharedRef<SGraphEditor> CreateViewportWidget();
+	TSharedRef<SGraphEditor> CreateViewportWidget(UEdGraph* InGraph);
 
 	void BindCommands();
 
@@ -95,6 +95,8 @@ protected:
 	bool CanPasteNodes();
 	void DuplicateNodes();
 	bool CanDuplicateNodes();
+	void EditNode();
+	bool CanEditNode();
 	// End Graph Editor Commands
 
 	void GraphSettings();
