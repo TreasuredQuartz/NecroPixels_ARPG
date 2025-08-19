@@ -179,7 +179,7 @@ void SGenericNodeComponentClassCombo::GenerateFilteredComponentList()
 	int32 LastSeparatorIndex = INDEX_NONE;
 	FGenericNodeComponentClassComboEntryPtr* LastSeparatorPtr = nullptr;
 
-	const bool bHasFilterText = !TextFilter->GetFilterText().IsEmpty();
+	const bool bHasFilterText = TextFilter == nullptr ? false : !TextFilter->GetFilterText().IsEmpty();
 
 	for (int32 ComponentIndex = 0; ComponentIndex < ComponentClassList->Num(); ComponentIndex++)
 	{

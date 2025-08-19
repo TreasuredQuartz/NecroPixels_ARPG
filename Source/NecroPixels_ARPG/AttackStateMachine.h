@@ -21,7 +21,7 @@ public:
 	AAttackStateMachine();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttackStateMachine", meta = (ExposeOnSpawn = true))
-	AActor* OwningActor;
+	AActor* AvatarActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttackStateMachine")
 	UGenericGraph* AttackStateGraph;

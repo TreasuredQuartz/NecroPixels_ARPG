@@ -106,6 +106,7 @@ bool AAttackInstance::ShouldImpactActor(AActor* InActor) const
 	if (!bShouldSelfHarm)
 	{
 		if (GetOwner() == InActor) return false;
+		if (GetInstigator() == InActor) return false;
 	}
 
 	if (!bShouldMultiHitActor)
